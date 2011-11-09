@@ -88,3 +88,12 @@ log4j = {
 
     warn   'org.mortbay.log'
 }
+
+jms {
+    containers {
+        standard {
+            sessionTransacted = true
+        }
+    }
+}
+activemq.brokerURL = "vm://localhost?broker.persistent=false"
