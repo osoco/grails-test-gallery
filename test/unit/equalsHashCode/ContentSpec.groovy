@@ -1,6 +1,6 @@
-package es.osoco
+package equalsHashCode
 
-import es.osoco.grails.plugins.EqualsHashCodeSpec
+import es.equalsHashCode.grails.plugins.EqualsHashCodeSpec
 
 abstract class ContentSpec extends EqualsHashCodeSpec {
 

@@ -1,4 +1,4 @@
-package es.osoco
+package equalsHashCode
 
 class BlogEntrySpec extends ContentSpec {
     def createDomainObjectToCompare() {

@@ -1,4 +1,4 @@
-package es.osoco
+package equalsHashCode
 
 class BookSpec extends ContentSpec {
     def createDomainObjectToCompare() {
