@@ -9,8 +9,7 @@ class QueueListenerService {
     MessageProcessorService messageProcessorService
 
     @Queue(name = QueueListenerService.QUEUE_NAME)
-    void onMessage(msg)
-    {
+    void onMessage(msg) {
         messageProcessorService.process(msg)
     }
 }

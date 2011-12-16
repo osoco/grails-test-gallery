@@ -5,30 +5,26 @@ import grails.plugin.spock.IntegrationSpec
 import java.util.concurrent.CountDownLatch
 import static java.util.concurrent.TimeUnit.SECONDS
 
+class Timeout {
+    private endTime
+
+    Timeout(duration) {
+        endTime = System.currentTimeMillis() + duration
+    }
+
+    def hasTimedOut() {
+        timeRemaining() <= 0
+    }
+
+    def timeRemaining() {
+        endTime - System.currentTimeMillis()
+    }
+}
+
 class QueueListenerServiceSpec extends IntegrationSpec {
     private static final QUEUE_RECEPTION_TIMEOUT_SEC = 5
     private static final QUEUE_POLL_TIMEOUT_MILLIS = 5000
     private static final QUEUE_POLL_INTERVAL_MILLIS = 500
-
-    private static class Timeout
-    {
-        private endTime
-
-        Timeout(duration)
-        {
-            endTime = System.currentTimeMillis() + duration
-        }
-
-        def hasTimedOut()
-        {
-            timeRemaining() <= 0
-        }
-
-        def  timeRemaining()
-        {
-            endTime - System.currentTimeMillis()
-        }
-    }
 
     QueueListenerService queueListenerService
     JmsService jmsService
@@ -40,8 +36,7 @@ class QueueListenerServiceSpec extends IntegrationSpec {
         queueListenerService.messageProcessorService = messageProcessor
     }
 
-    def 'receives a message and passes it to further processing'()
-    {
+    def 'receives a message and passes it to further processing'() {
         when:
         jmsService.send(QueueListenerService.QUEUE_NAME, message())
         messageReceived.await(QUEUE_RECEPTION_TIMEOUT_SEC, SECONDS)
@@ -55,8 +50,7 @@ class QueueListenerServiceSpec extends IntegrationSpec {
         assertQueue(empty())
     }
 
-    def 'message is returned to the queue if an exception is thrown'()
-    {
+    def 'message is returned to the queue if an exception is thrown'() {
         given:
         messageProcessor.process(_) >> {
             messageReceived.countDown()
@@ -71,18 +65,14 @@ class QueueListenerServiceSpec extends IntegrationSpec {
         assertQueue(notEmpty())
     }
 
-    private message()
-    {
+    private message() {
         [key: 'a value']
     }
 
-    private void assertQueue(condition)
-    {
+    private void assertQueue(condition) {
         def timeout = new Timeout(QUEUE_POLL_TIMEOUT_MILLIS)
-        while (!condition.fulfilled())
-        {
-            if (timeout.hasTimedOut())
-            {
+        while (!condition.fulfilled()) {
+            if (timeout.hasTimedOut()) {
                 throw new AssertionError(condition.describeFailure())
             }
 
@@ -90,16 +80,14 @@ class QueueListenerServiceSpec extends IntegrationSpec {
         }
     }
 
-    private empty()
-    {
+    private empty() {
         [
             fulfilled: { jmsService.browse(QueueListenerService.QUEUE_NAME) == []},
             describeFailure: 'Expected queue to be empty'
         ]
     }
 
-    private notEmpty()
-    {
+    private notEmpty() {
         [
             fulfilled: { jmsService.browse(QueueListenerService.QUEUE_NAME) != []},
             describeFailure: 'Expected queue to be NOT empty'
