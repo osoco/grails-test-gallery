@@ -22,7 +22,7 @@ class Timeout {
 }
 
 class QueueListenerServiceSpec extends IntegrationSpec {
-    private static final QUEUE_RECEPTION_TIMEOUT_SEC = 5
+    private static final QUEUE_RECEPTION_TIMEOUT_SEC = 30
     private static final QUEUE_POLL_TIMEOUT_MILLIS = 5000
     private static final QUEUE_POLL_INTERVAL_MILLIS = 500
 
@@ -83,14 +83,14 @@ class QueueListenerServiceSpec extends IntegrationSpec {
     private empty() {
         [
             fulfilled: { jmsService.browse(QueueListenerService.QUEUE_NAME) == []},
-            describeFailure: 'Expected queue to be empty'
+            describeFailure: { 'Expected queue to be empty' }
         ]
     }
 
     private notEmpty() {
         [
             fulfilled: { jmsService.browse(QueueListenerService.QUEUE_NAME) != []},
-            describeFailure: 'Expected queue to be NOT empty'
+            describeFailure: { 'Expected queue to be NOT empty' }
         ]
     }
 }
