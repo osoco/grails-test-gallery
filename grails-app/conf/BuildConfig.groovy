@@ -22,6 +22,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         compile 'commons-lang:commons-lang:2.6'
+        compile 'org.codehaus.gpars:gpars:0.12'
         compile 'org.apache.activemq:activemq-core:5.5.1', { excludes 'commons-logging', 'servlet-api' }
     }
 }
