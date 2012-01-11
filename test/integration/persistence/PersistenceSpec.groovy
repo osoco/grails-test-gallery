@@ -3,12 +3,12 @@ package persistence
 import grails.plugin.spock.IntegrationSpec
 import org.hibernate.SessionFactory
 
-abstract class PersistenceSpec extends IntegrationSpec
-{
+abstract class PersistenceSpec extends IntegrationSpec {
     SessionFactory sessionFactory
 
-    def 'persistable domain object should be able to be saved and retrieved'()
-    {
+    protected abstract createPersistableDomainObject()
+
+    def 'persistable domain object should be able to be saved and retrieved'() {
         given:
         def persistableDomainObject = createPersistableDomainObject()
 
